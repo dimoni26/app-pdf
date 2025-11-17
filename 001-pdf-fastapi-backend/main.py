@@ -19,7 +19,7 @@ app.include_router(pdfs.router)
 
 origins = [
     "http://localhost:3000",
-    "https://app-pdf.vercel.app/",
+    "https://app-pdf-seven.vercel.app/",
 ]
 
 # CORS configuration, needed for frontend development
