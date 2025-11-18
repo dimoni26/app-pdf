@@ -7,6 +7,7 @@ export default function PdfList() {
   const [pdfs, setPdfs] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [filter, setFilter] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const didFetchRef = useRef(false);
 
   useEffect(() => {
@@ -21,6 +22,7 @@ export default function PdfList() {
     if (selected !== undefined) {
       path = `/pdfs?selected=${selected}`;
     }
+    setIsLoading(true);
     try {
       const res = await fetch(process.env.NEXT_PUBLIC_API_URL + path);
       if (!res.ok) {
@@ -31,6 +33,8 @@ export default function PdfList() {
     } catch (error) {
       console.error("Failed to fetch PDFs", error);
       alert(error.message || "Failed to fetch PDFs");
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -143,7 +147,7 @@ you will need to restart the frontend.*/
           <button className={styles.loadBtn} type="submit">Load PDF</button>
         </form>
       </div>
-      {!pdfs.length && <div>Loading...</div>}
+      {isLoading && <div>Loading...</div>}
       {pdfs.map((pdf) => (
         <PDFComponent key={pdf.id} pdf={pdf} onDelete={handleDeletePdf} onChange={handlePdfChange} />
       ))}
